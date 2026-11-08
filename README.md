@@ -19,17 +19,15 @@
 
 ---
 
-## Credit where it belongs
-
 **Every pixel you see was designed and written by [MASH2RAFI](https://github.com/MASH2RAFI).**
 The clock, the layout engine, the dial geometry and the ring shader are all
 their work, published as [omarchy-kronos](https://github.com/MASH2RAFI/omarchy-kronos).
 
-That shader is the clever bit, and it deserves calling out: each ring's 60 dots
-and labels are rasterised **once** into a texture, and a fragment shader rotates
-that texture and applies a baked world-angle alpha lookup in a **single draw
-call**. No offscreen pass, no per-frame raster, no texture upload. Per tick the
-CPU updates two rotation uniforms and nothing else.
+That shader is the clever bit: each ring's 60 dots and labels are rasterised
+**once** into a texture, and a fragment shader rotates that texture and applies
+a baked world-angle alpha lookup in a **single draw call**. No offscreen pass,
+no per-frame raster, no texture upload. Per tick the CPU updates two rotation
+uniforms and nothing else.
 
 This repository contains **no redesign and no rewrite** — it is a host swap.
 Upstream targets [Omarchy](https://omarchy.org), where Kronos runs as a
@@ -49,6 +47,11 @@ module import from a subdirectory:
 exactly what was added here.
 
 If you run Omarchy or Hyprland, **use [the original](https://github.com/MASH2RAFI/omarchy-kronos)** — it is the real thing and this port has nothing to offer you.
+
+**How this port was made:** by [Astr0kreep](https://github.com/Astr0kreep)
+working with Claude Opus 5 (Anthropic) in Claude Code. Commits carry a
+`Co-Authored-By` trailer to that effect, the same way upstream records its own
+assisted commits.
 
 This project is not affiliated with or endorsed by MASH2RAFI.
 
