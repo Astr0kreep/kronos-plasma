@@ -6,8 +6,8 @@ runtime.
 
 ## Why the category matters
 
-Plasma's **Get New Widgets** dialog does not browse the whole store. It
-asks for exactly one category, set in `/usr/share/knsrcfiles/plasmoids.knsrc`:
+Plasma's **Get New Widgets** dialog does not browse the whole store. It asks
+for exactly one category, set in `/usr/share/knsrcfiles/plasmoids.knsrc`:
 
 ```ini
 [KNewStuff]
@@ -17,20 +17,32 @@ Uncompress=kpackage
 KPackageStructure=Plasma/Applet
 ```
 
-So the listing **must** be filed under **Plasma 6 Extensions**. Anything
-filed under a Plasma 5 category, or under a generic "Clocks" category, is
-reachable by web browsing only and will never appear in the widget
-installer.
+"Plasma 6 Extensions" (OCS category id 705) is an umbrella, not a leaf. Its
+children include **Plasma 6 Clocks** (708), and the store's OCS API returns
+child items for a parent query — verified against the live API:
 
-`Uncompress=kpackage` is also why the uploaded file has to be a real
-KPackage archive (`metadata.json` at the top level) rather than a tarball
-of the project folder. `./package.sh` produces exactly that.
+```
+GET /ocs/v1/content/data?categories=705&search=Xenoglyph+Sigil+Clock
+  -> 1 hit, typeid 708 "Plasma 6 Clocks"
+```
+
+So filing under **Plasma 6 Clocks** keeps the widget visible in Get New
+Widgets *and* puts it in a bucket people actually browse: 87 items instead of
+the 637 in Plasma 6 Applets, and it is in fact a clock.
+
+What would break it is filing under a Plasma 5 category, or a generic clock
+category outside the Plasma 6 tree — then it is reachable by web browsing
+only and never appears in the widget installer.
+
+`Uncompress=kpackage` is also why the uploaded file has to be a real KPackage
+archive (`metadata.json` at the top level) rather than a tarball of the
+project folder. `./package.sh` produces exactly that.
 
 ## Form fields
 
 | Field | Value |
 | --- | --- |
-| Category | `Plasma 6 Extensions` |
+| Category | `Plasma 6 Extensions` -> `Plasma 6 Clocks` (OCS id 708) |
 | Title | `Kronos Clock` |
 | Version | `1.2.0-plasma1` |
 | License | `MIT` |
@@ -47,41 +59,20 @@ Screenshots, in this order (first one becomes the listing thumbnail):
 
 ## Description
 
-> Kronos is an orbital desktop clock: a large hour readout wrapped in two
-> rotating rings of dots, one marking minutes and one marking seconds.
-> It sits on the wallpaper, behind everything else, and it is readable at
-> a glance from across the room.
+Short on purpose — people hunting for a widget skim the store and read the
+repo. Credits and the full rundown live on GitHub, linked at the bottom.
+
+> A big hour readout wrapped in two rotating rings of dots: minutes on one,
+> seconds on the other. It sits on the wallpaper behind your windows, draws on
+> the GPU, and has around fifty settings in the normal Plasma config dialog.
 >
-> **Credit where it belongs.** Kronos was designed and written by
-> **MASH2RAFI** for Omarchy, as a Quickshell widget for Hyprland:
-> https://github.com/MASH2RAFI/omarchy-kronos — all of the clock's
-> design, geometry and rendering are their work. This package is a port
-> that swaps the Wayland layer-shell host for a Plasma applet shell so the
-> same clock runs on a Plasma 6 desktop. The drawing code is carried over
-> essentially unchanged.
+> Originally built for Omarchy/Hyprland by **MASH2RAFI**. This is a Plasma 6
+> port of their work — the clock is theirs, the shell around it is new.
 >
-> **Rendering.** Each ring's sixty dots and labels are rasterised once
-> into a texture; a fragment shader then rotates that texture and
-> multiplies it by a baked alpha lookup. That is a single draw call per
-> ring with nothing re-uploaded per frame, so the animation stays smooth
-> without burning CPU. On hardware or drivers where the shader path is
-> unavailable it falls back to a plain canvas renderer automatically.
+> Needs Plasma 6 and a Nerd Font (JetBrainsMono Nerd Font by default). Add it
+> to the desktop rather than a panel; it wants the room.
 >
-> **Configurable.** Around fifty settings in the widget's own
-> configuration dialog — native Plasma config pages, not a custom panel.
-> Ring radii, dot sizes, tick density, fonts, the time capsule, the date
-> column, colours, 12/24-hour, seconds on or off.
->
-> **Requirements.** Plasma 6.0 or newer. A Nerd Font (JetBrainsMono Nerd
-> Font is the default) for the glyphs in the time capsule; without one
-> those few characters render as boxes while the rest of the clock is
-> fine.
->
-> **Install.** Add it to the desktop, not to a panel — it is a wallpaper
-> clock and wants room. Right-click the desktop, Add Widgets, drag Kronos
-> Clock out.
->
-> MIT licensed. Source, porting notes and a changelog:
+> Full details, credits and source:
 > https://github.com/Astr0kreep/kronos-plasma
 
 ## After submitting
@@ -92,8 +83,9 @@ Screenshots, in this order (first one becomes the listing thumbnail):
   Widgets** — that dialog talks to the store through an OCS provider list
   (`https://autoconfig.kde.org/ocs/providers.xml`) and results are
   cached.
-* To check visibility without waiting on the dialog, browse the
-  Plasma 6 Extensions category on the store directly.
+* To check visibility without waiting on the dialog, query the API
+  directly:
+  `https://api.kde-look.org/ocs/v1/content/data?categories=705&search=Kronos`
 
 ## Publishing an update
 
