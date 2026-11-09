@@ -1,8 +1,8 @@
 {
     "KPlugin": {
         "Authors": [
-            { "Name": "MASH2RAFI", "Email": "" },
-            { "Name": "Plasma 6 port" }
+            { "Name": "MASH2RAFI" },
+            { "Name": "Astr0kreep" }
         ],
         "Category": "Date and Time",
         "Description": "Orbital wallpaper clock with minute/second dot rings",
@@ -11,7 +11,7 @@
         "License": "MIT",
         "Name": "Kronos Clock",
         "Version": "1.2.0-plasma1",
-        "Website": "https://github.com/MASH2RAFI/omarchy-kronos"
+        "Website": "https://github.com/Astr0kreep/kronos-plasma"
     },
     "KPackageStructure": "Plasma/Applet",
     "X-Plasma-API-Minimum-Version": "6.0"

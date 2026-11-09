@@ -1,3 +1,5 @@
 *.plasmoid
 *~
 .directory
+dist/
+.pkgcheck/

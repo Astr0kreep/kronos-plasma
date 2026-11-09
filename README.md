@@ -117,6 +117,14 @@ Remove:
 kpackagetool6 --type Plasma/Applet --remove org.kronos.clock
 ```
 
+### Build a `.plasmoid`
+
+`./package.sh` writes `dist/kronos-clock-<version>.plasmoid` — a KPackage
+archive with `metadata.json` at the top level. That is the shape the KDE
+Store serves and the shape Plasma's **Get New Widgets** dialog expects, and
+`kpackagetool6 --install` takes it directly too. Listing copy and the
+category the widget has to be filed under live in [`STORE.md`](STORE.md).
+
 ## Configuration
 
 Right-click the widget → **Configure Kronos Clock**. Three tabs:
